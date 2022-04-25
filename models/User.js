@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose")
+const { Schema, model } = require("mongoose");
 
 //Creating the Student model
 const userSchema = new Schema(
@@ -14,11 +14,6 @@ const userSchema = new Schema(
             required: true,
             unique: true,
             match: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
-            validate: {
-                validator: function (v) {
-                    return /\d{3}-\d{3}-\d{4}/.test(v);
-                },
-            }
         },
         thoughts: [thoughtsSchema],
         friends: [this]
@@ -26,6 +21,7 @@ const userSchema = new Schema(
     {
         toJSON: {
             getters: true,
+            virtuals: true
         },
     }
 );
