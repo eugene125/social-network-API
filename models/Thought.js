@@ -10,7 +10,7 @@ const thoughtsSchema = new Schema(
             minlength: 1,
             maxlength: 280
         },
-        username:{
+        username: {
             type: String,
             required: true
         },
@@ -22,6 +22,32 @@ const thoughtsSchema = new Schema(
             virtuals: true
         },
         timestamps: true,
+    }
+);
+
+thoughtsSchema.virtual("reactionCount").get(function () { return this.reaction.length })
+
+const reactionSchema = new Schema(
+    {
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId
+        },
+        reactionBody: {
+            type: String,
+            required: true,
+            maxlength: 280
+        },
+        username: {
+            type: String,
+            required: true
+        }
+    },
+    {
+        toJSON: {
+            virtuals: true
+        },
+        timestamps: true
     }
 );
 
