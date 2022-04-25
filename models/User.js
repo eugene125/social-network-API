@@ -20,11 +20,21 @@ const userSchema = new Schema(
                 },
             }
         },
-        thoughts: {
-
-        },
-        friends: {
-
-        }
+        thoughts: [thoughtsSchema],
+        friends: [this]
     },
-)
+    {
+        toJSON: {
+            getters: true,
+        },
+    }
+);
+
+userSchema
+.virtual("friendCount")
+.get(function() {return this.friends.length})
+
+// Initializing User model
+const User = model("user", userSchema)
+
+module.exports = User;
