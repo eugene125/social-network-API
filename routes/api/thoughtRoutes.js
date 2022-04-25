@@ -10,6 +10,6 @@ router.route("/:thoughtId").get(controller.getSingleThought).put(controller.upda
 
 router.route("/:thoughtId/reactions").post(controller.createReaction);
 
-router.route("/:thoughtId/reactions/:reactionId").delete(controller.getSingleReaction);
+router.route("/:thoughtId/reactions/:reactionId").delete(controller.deleteReaction);
 
 module.exports = router;
