@@ -20,7 +20,7 @@ const createThought = async (req, res) => {
             { $addToSet: { thoughts: createThought } },
             { runValidators: true, new: true }
         )
-        res.json({createThought, updatedUser});
+        res.json({ createThought, updatedUser });
     }
     catch (err) {
         console.error(err);
@@ -46,11 +46,11 @@ const updateSingleThought = async (req, res) => {
             req.body,
             { runValidators: true, new: true }
         );
-        const updatedUser = await User.findByIdAndUpdate( { username: updateThought.username } );
+        const updatedUser = await User.findOne({ username: updateThought.username });
         await updatedUser.thoughts.id(req.params.thoughtId).remove();
         await updatedUser.thoughts.push(updateThought);
         await updatedUser.save((err) => console.error(err));
-        res.json( { updateThought, updatedUser } );
+        res.json({ updateThought, updatedUser });
     }
     catch (err) {
         console.error(err);
@@ -60,9 +60,10 @@ const updateSingleThought = async (req, res) => {
 
 const deleteSingleThought = async (req, res) => {
     try {
-        const deleteThought = await Thought.findByIdAndDelete( { _id: req.params.thoughtId } );
-        const updatedUser = await User.findOne( { username: deleteThought.username } );
+        const deleteThought = await Thought.findByIdAndDelete({ _id: req.params.thoughtId });
+        const updatedUser = await User.findOne({ username: deleteThought.username });
         await updatedUser.thoughts.id(req.params.thoughtId).remove();
+        await updatedUser.thoughts.push(deleteThought);
         await updatedUser.save((err) => console.error(err));
         res.json(deleteThought);
     }
@@ -74,8 +75,8 @@ const deleteSingleThought = async (req, res) => {
 
 const createReaction = async (req, res) => {
     try {
-        const thought = await Thought.findByIdAndUpdate( {  _id: req.params.thoughtId } )
-        await thought.reactions.push( req.body );
+        const thought = await Thought.findByIdAndUpdate({ _id: req.params.thoughtId })
+        await thought.reactions.push(req.body);
         await thought.save((err) => console.error(err));
         res.json(thought);
     }
@@ -87,7 +88,7 @@ const createReaction = async (req, res) => {
 
 const deleteReaction = async (req, res) => {
     try {
-        const thought = await Thought.findById( { _id: req.params.thoughtId } );
+        const thought = await Thought.findById({ _id: req.params.thoughtId });
         await thought.reactions.id(req.params.reactionId).remove();
         await thought.save((err) => console.error(err));
         res.json(thought);
