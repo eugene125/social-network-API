@@ -1,12 +1,9 @@
 const { Schema, model } = require("mongoose");
+const { thoughtsSchema } = require("./Thought")
 
 //Creating the Student model
 const userSchema = new Schema(
     {
-        userId: {
-            type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId()
-        },
         username: {
             type: String,
             required: true,
