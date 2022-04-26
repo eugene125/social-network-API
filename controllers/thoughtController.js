@@ -36,7 +36,11 @@ const getSingleThought = async (req, res) => {
 
 const updateSingleThought = async (req, res) => {
     try {
-        const updateThought = await Thought.updateOne(req.params.userId);
+        const updateThought = await Thought.updateOne(
+            { _id: req.params.userId },
+            { $set: req.body },
+            { runValidators: true, new: true }
+        );
         res.json(updateThought);
     }
     catch {

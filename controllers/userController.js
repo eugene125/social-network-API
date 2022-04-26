@@ -36,7 +36,11 @@ const getSingleUser = async (req, res) => {
 
 const updateSingleUser = async (req, res) => {
     try {
-        const updateUser = await User.updateOne(req.params.userId);
+        const updateUser = await User.updateOne(
+            { _id: req.params.userId },
+            { $set: req.body },
+            { runValidators: true, new: true }
+        );
         res.json(updateUser);
     }
     catch {
@@ -60,8 +64,8 @@ const addFriend = async (req, res) => {
     try {
         const addFriend = await User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $addToSet: { friends: req.body } },
-            { runValidators: true, new: true }
+            { $addToSet: { friends: req.params.friendId } },
+            { new: true }
         );
         res.json(addFriend);
     }
@@ -75,8 +79,8 @@ const deleteFriend = async (req, res) => {
     try {
         const deleteFriend = await User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $pull : { friends: { userId: req.params.userId } } },
-            { runValidators: true, new: true }
+            { $pull: { friends: req.params.friendId } },
+            { new: true }
         )
         res.json(deleteFriend);
     }
